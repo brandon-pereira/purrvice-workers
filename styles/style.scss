@@ -1,0 +1,51 @@
+@import 'mixins';
+@import 'config';
+
+body {
+	margin: 0;
+	font-family: 'Helvetica Neue', arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	// overflow: hidden;
+}
+nav {
+	background: linear-gradient(transparent, rgba(0,0,0,.2)), #4A00FF;
+	display: flex;
+	flex-shrink: 0;
+	h1 {
+		margin: 0;
+		padding: 1rem;
+		color: #fff;
+		text-shadow: 0 2px rgba(0,0,0,.5);
+		flex: 1;
+	}
+	.sw-enabled {
+		display: inline-block;
+		height: 2rem;
+		width: 2rem;
+		background: red;
+		border-radius: 50%;
+		align-self: center;
+		margin: 0 1rem;
+		&.true {
+			background: green;
+		}
+	}
+}
+
+img {
+	flex: 1;
+	flex-shrink: 0; 
+	height: 100%;
+	// width: 100%;
+}
+
+button {
+	-webkit-appearance: none;
+	background: linear-gradient(transparent, rgba(0,0,0,.2)), #4A00FF;
+	border: none;
+	color: #fff;
+	font-size: 1.6rem;
+	padding: 1rem;
+}

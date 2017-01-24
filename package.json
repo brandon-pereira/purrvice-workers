@@ -1,0 +1,23 @@
+{
+  "name": "purrvice-workers",
+  "version": "1.0.0",
+  "description": "A web application for getting random cat pictures. Powered by service workers. Was built as a tech-talk for Critical Mass. See keynote file for presentation notes.",
+  "repository": "https://github.com/brandon-pereira/purrvice-workers",
+  "main": "sw.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "node-sass": "^4.3.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.2.0-rc.3"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open --publicPath ./ --inline"
+  },
+  "author": "Brandon Pereira",
+  "license": "ISC"
+}
