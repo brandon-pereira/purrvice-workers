@@ -74,15 +74,23 @@ function getCatPic() {
 	});  
 }
 
-function fetchWithRetry(request) {
+// function to fetch a url with retry logic if failed.
+function fetchWithRetry(request, attempt_no = 0) {
 	console.info("Fetching with retry", request.url);
 	return new Promise(function(resolve, reject) {
 		fetch(request).then(function(response) {
 			console.info("ServiceWorker: Got a valid image", response);
 			resolve(response);
 		}).catch(function(error) {
-			console.info("ServiceWorker: Got an error when requesting Cat API. Retrying...");
-			fetchWithRetry(request).then(resolve);
+			if(attempt_no < 5) {
+				console.info("ServiceWorker: Got an error when requesting Cat API. Retrying...");
+				fetchWithRetry(request, ++attempt_no).then(resolve);	
+			} else {
+				console.info("ServiceWorker: Cat API isn't resolving.. maybe poor network. Throttling retry.");
+				setTimeout(function() {
+					fetchWithRetry(request, ++attempt_no).then(resolve);	
+				}, attempt_no * 1000); // 5s, 6s, 7s, etc
+			}
 		});
 	});
 }
