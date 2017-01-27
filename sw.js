@@ -4,7 +4,6 @@ var self = this;
 this.addEventListener('install', function(event) {
   event.waitUntil(
      caches.open(VERSION).then(function(cache) {
-			// console.log(cache);
       return cache.addAll([
         '/',
         './index.html',
@@ -45,13 +44,15 @@ this.addEventListener('fetch', function(event) {
 
 function getCatPic() {
 	return new Promise(function (resolve, reject) {
+		// create new request
 		var request = new Request('http://thecatapi.com/api/images/get?format=src', {method: 'GET'});
 		caches.open(VERSION).then(function(cache) {
+			// search cache for request
 			caches.match(request).then(function (cached_pic) {
 				if(cached_pic) {
 			    console.log("We have a cached cat! Sending to front end.", cached_pic);
 					cache.delete(request).then(function(s) {
-						console.log("Clearing cached", s);
+						// clear cache and resolve with cached image 
 						resolve(cached_pic);
 					});
 				} else {
@@ -59,8 +60,10 @@ function getCatPic() {
 			  }
 			}).catch(function (e) {
 				console.log("No cache, loading next manually.", e);
+				// not in cache, fetch from server then resolve
 			  fetchWithRetry(request).then(resolve);
 			}).then(function() {
+				// equivilant to jquery .always. Will preload next asset and add to cache
 				console.log("Preloading next picture.");
 				fetchWithRetry(request).then(function (response) {
 					console.log("Preloading completed.");
