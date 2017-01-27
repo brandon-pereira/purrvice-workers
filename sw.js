@@ -15,10 +15,6 @@ this.addEventListener('install', function(event) {
   );
 });
 
-this.addEventListener('message', function(event){
-    console.log("SW Received Message: " + event.data);
-});
-
 this.addEventListener('activate', function(event) {
 	console.info("ServiceWorker: Service Worker claimed ownership of page");
   // Claim any clients immediately, so that the page will be under SW control without reloading.
@@ -26,7 +22,6 @@ this.addEventListener('activate', function(event) {
 });
 
 this.addEventListener('fetch', function(event) {
-	console.info("ServiceWorker: Fetching Request", event.request);
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
@@ -35,7 +30,8 @@ this.addEventListener('fetch', function(event) {
 					// Cache hit - return the response from the cached version
           return response;
 				} else if(isCatAPI) {
-					// API hit - return the 'real' api TODO: cache the api
+					// API hit - return the 'real' api
+					console.info("ServiceWorker: Detected cat pic URL from front-end");
 					return getCatPic();
 				} else {
 					// Not in cache - return the result from the live server
@@ -50,22 +46,25 @@ this.addEventListener('fetch', function(event) {
 function getCatPic() {
 	return new Promise(function (resolve, reject) {
 		var request = new Request('http://thecatapi.com/api/images/get?format=src', {method: 'GET'});
-		fetchWithRetry(request).then(function (response) {
-			caches.open(VERSION).then(function(cache) {
-				console.log("cache opened, adding");
-				cache.put(request, response);
-			});
-		});
 		
 		caches.match(request).then(function (cached_pic) {
-			console.log("got cache match", cached_pic);
+			console.log("We have a cached cat!", cached_pic);
 			if(cached_pic) {
-				return resolve(cached_pic);
+				resolve(cached_pic);
+				caches.delete(request);
 			}
-			return resolve(fetchWithRetry(request));
-		}).catch(function () {
-			console.log("rejected");
-			reject(fetchWithRetry(request));
+			return reject(); // falls to catch
+		}).catch(function (e) {
+			console.log("rejected", e);
+			resolve(fetchWithRetry(request));
+		}).then(function() {
+			console.log("FINALLY");
+			fetchWithRetry(request).then(function (response) {
+				caches.open(VERSION).then(function(cache) {
+					console.log("cache opened, adding");
+					cache.put(request, response);
+				});
+			});
 		});
 	});
 }
