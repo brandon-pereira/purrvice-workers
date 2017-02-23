@@ -1,6 +1,15 @@
 # Purrvice Workers
 A micro-webapp that uses service workers to preload and cache pictures of cats. Works offline.
 
+## Running
+Run 
+```
+npm install
+npm start
+```
+
+Note: You may need to refresh once in order to force the service worker to activate.
+
 ## WebWorkers vs ServiceWorkers
 Slide 5 has some pretty good points on this. Basically, Web Workers can have many per
 tab while Service Workers are shared. Web Workers live for life of span, SW live on.
