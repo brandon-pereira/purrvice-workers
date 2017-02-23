@@ -13,7 +13,7 @@ save you some time while developing.
 	will not communicate with http://localhost:8080/webpack-dev-server)
 - Service Workers don't work with ES6/ES7 code. You are limited to using only ES5 and 
 	any ES6 code that has the same browser support as service workers.
-- Service Workers can't connect directly to the webpage until they've registered and the user has refreshed. This is only a problem if you're using a client-side proxy.
+- Service Workers can't connect directly to the webpage until they've registered and the user has refreshed. This is only a problem if you're using a client-side proxy (can't garuntee service worker is ready)
 - Service Workers sometimes won't execute if other service workers are active. You 
 	can find and kill active service workers in Chrome Dev Tools through Application >
 	Check 'Show All' > Hit unregister on all.
