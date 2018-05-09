@@ -1,25 +1,38 @@
+const webpack = require('webpack');
+
 module.exports = {
-  entry: {
-		'script': './scripts/script.js'
+	entry: './App/index.js',
+	mode: 'development',
+	output: {
+		path: '/',
+		filename: 'script.js'
 	},
-  output: {
-    path: './',
-		filename: '[name].js'
-  },
 	module: {
-		loaders: [
+		rules: [
 			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				loader: 'babel-loader',
-				query: {
-					presets: ['es2015']
-				}
+				test: /\.js?$/,
+				exclude: /node_modules/,
+				use: [{
+					loader: 'babel-loader',
+					options: {
+						presets: [["env", {
+							"targets": {
+								"browsers": ["last 2 versions"]
+							}
+						}]],
+						plugins: [
+							"add-module-exports" // export default will allow you to import without typing .default
+						]
+					}
+				}]
 			},
 			{
 				test: /\.scss$/,
-				loader: 'style!css!sass'
+				use: ["style-loader", "css-loader", "sass-loader"]
 			}
 		]
-	}
-};
+	},
+	plugins: [
+		new webpack.SourceMapDevToolPlugin()
+	]
+}
