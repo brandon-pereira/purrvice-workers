@@ -4,29 +4,37 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	background: red;
+	background: #000;
 }
 nav {
-	background: linear-gradient(transparent, rgba(0,0,0,.2)), #4A00FF;
+	background: linear-gradient(transparent, rgba(0,0,0,.2)), #784cca;
+	box-shadow: 0 0 10px rgba(0,0,0,.6);
+	position: relative;
+	z-index: 1;
 	display: flex;
 	flex-shrink: 0;
+	border-radius: 8px 8px 0 0;
 	h1 {
 		margin: 0;
 		padding: 1rem;
 		color: #fff;
+		font-weight: 400;
+		font-size: 1.4rem;
 		text-shadow: 0 2px rgba(0,0,0,.5);
 		flex: 1;
 	}
 	.sw-enabled {
 		display: inline-block;
-		height: 2rem;
-		width: 2rem;
-		background: red;
+		height: 1.2rem;
+		width: 1.2rem;
+		background-color: #ff0000c9;
+		background-image: linear-gradient(transparent, rgba(0,0,0,.2));
+		box-shadow: 0 3px 13px rgba(0,0,0,.4);
 		border-radius: 50%;
 		align-self: center;
 		margin: 0 1rem;
 		&.true {
-			background: green;
+			background-color: #3c9e3c;
 		}
 	}
 }
@@ -34,24 +42,31 @@ nav {
 .body {
 	flex: 1;
 	flex-shrink: 0; 
-	background: #000;
+	background-image: linear-gradient(25deg, #62759d, #768bac, #89a2ba, #9db9c9);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
 	img {
-		max-width: 100%;
-		max-height: 100%;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+		filter: drop-shadow(0px 0px 1px rgba(0,0,0,.2))
+				drop-shadow(0px 0px 10px rgba(0,0,0,.3));
 	}
 }
 
 button {
-	-webkit-appearance: none;
-	background: linear-gradient(transparent, rgba(0,0,0,.2)), #4A00FF;
+	background: linear-gradient(transparent, rgba(0,0,0,.2)), #784cca;
 	border: none;
+	box-shadow: 0 -1px 13px rgba(0,0,0,.5);
+	z-index: 1;
+	position: relative;
 	color: #fff;
 	font-size: 1.6rem;
 	padding: 1rem;
+	border-radius: 0 0 8px 8px;
 	&:disabled {
 		opacity: 0.5;
 	}

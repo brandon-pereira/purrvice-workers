@@ -8,23 +8,27 @@ import Registrar from './Registrar';
 // Define DOM elements
 const $button = document.querySelector("button");
 const $imgContainer = document.querySelector(".body");
+const $swStatus = document.querySelector(".sw-enabled");
 
 Registrar.ready.then(function() {
   // Service Worker Installed and ready!
   console.log("Client: Service Worker is ready");
   loadImage();
-  button.addEventListener("click", () => {
-    button.setAttribute("disabled", true);
+  $swStatus.classList.add('true');
+  $button.addEventListener("click", () => {
+    console.log("LAOD");
     loadImage();
   });
 });
 
 // Loads new image from our middleware API (also disabled button till complete)
 function loadImage() {
-	var img = new Image();
+  $button.setAttribute("disabled", true);
+	const img = new Image();
 	img.onload = function() {
-		imgContainer.replaceChild(img, document.querySelector('img'));
-		button.removeAttribute('disabled');
+    console.log("DONE");
+		$imgContainer.replaceChild(img, document.querySelector('img'));
+		$button.removeAttribute('disabled');
 	}
-	img.src = "/getrandomcatpic?" + Date.now();
+  img.src = "/getrandomcatpic?" + Date.now();
 }
