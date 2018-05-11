@@ -32,6 +32,9 @@ function loadImage() {
     // Enable the buttons
 		$button.removeAttribute('disabled');
   }
+  img.onerror = function() {
+    $button.removeAttribute('disabled');
+  }
   // Note that /getrandomcatpic isn't a real URL, our service worker resolves it.
   img.src = "/getrandomcatpic?" + Date.now();
 }
