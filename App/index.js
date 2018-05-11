@@ -3,32 +3,35 @@ import Style from "./index.scss";
 
 // This will initialize the service worker
 import Registrar from './Registrar';
-// This will initialize the service worker
 
 // Define DOM elements
 const $button = document.querySelector("button");
-const $imgContainer = document.querySelector(".body");
-const $swStatus = document.querySelector(".sw-enabled");
 
-Registrar.ready.then(function() {
+Registrar.ready.then(() => {
   // Service Worker Installed and ready!
   console.log("Client: Service Worker is ready");
+  // Update status bar to indicate ready
+  document.querySelector(".sw-enabled").classList.add('true');
+  // Initially load an asset
   loadImage();
-  $swStatus.classList.add('true');
+  // Add an event listener for loading another asset
   $button.addEventListener("click", () => {
-    console.log("LAOD");
     loadImage();
   });
 });
 
 // Loads new image from our middleware API (also disabled button till complete)
 function loadImage() {
+  // Disable button
   $button.setAttribute("disabled", true);
+  // Async load the image
 	const img = new Image();
 	img.onload = function() {
-    console.log("DONE");
-		$imgContainer.replaceChild(img, document.querySelector('img'));
+    // Once the image is loaded, update the real image path.
+    document.querySelector(".body").replaceChild(img, document.querySelector('img'));
+    // Enable the buttons
 		$button.removeAttribute('disabled');
-	}
+  }
+  // Note that /getrandomcatpic isn't a real URL, our service worker resolves it.
   img.src = "/getrandomcatpic?" + Date.now();
 }
