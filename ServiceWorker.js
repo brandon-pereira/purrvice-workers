@@ -49,20 +49,22 @@ async function getCatPic(isPreload = false) {
 	// create new request
 	const request = new Request('http://thecatapi.com/api/images/get?format=src', {method: 'GET'});
 	// search cache for request
-	const cached_pic = await caches.match(request);
-	if(cached_pic) {
-		log("We have a cached cat! Sending to front end.", cached_pic);
-		// clear cache
-		const cache = await caches.open(VERSION);
-		await cache.delete(request);
-		// async cache next
-		getCatPic(true);
-		// return cache
-		return cached_pic;
+	if(!isPreload) {
+		const cached_pic = await caches.match(request);
+		if (cached_pic) {
+			log("We have a cached cat! Sending to front end.", cached_pic);
+			// clear cache
+			const cache = await caches.open(VERSION);
+			await cache.delete(request);
+			// async cache next
+			getCatPic(true);
+			// return cache
+			return cached_pic;
+		}
 	}
+
 	// not in cache, fetch from server then resolve
 	const response = await fetchWithRetry(request);
-
 	// If its a preload, store in cache, return nothing
 	if(isPreload) {
 		const cache = await caches.open(VERSION);
