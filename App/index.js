@@ -20,6 +20,17 @@ Registrar.ready.then(() => {
   });
 });
 
+/**
+ * Simple method to request/register service worker, ask for permission to send push notifications,
+ * and then send the "subscription" to server.
+ */
+async function requestNotificationAccess() {
+  const subscription = await Registrar.requestNotificationAccess();
+  await fetch(`http://localhost:8081/register?key=${subscription}`, {
+    method: 'POST'
+  })
+}
+
 // Loads new image from our middleware API (also disabled button till complete)
 function loadImage() {
   // Disable button

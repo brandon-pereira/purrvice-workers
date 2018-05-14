@@ -45,6 +45,19 @@ this.addEventListener('fetch', event => {
 	}());
 });
 
+
+this.addEventListener('push', (event) => {
+	let data = {
+		title: "New Pics Available!",
+		body: "Over 9000+ new photos."
+	};
+
+	log("receivedNotification", data);
+	event.waitUntil(self.registration.showNotification("New cat pics are up!", {
+      body: "Are you kitten?"
+    }));
+});
+
 async function getCatPic(isPreload = false) {
 	// create new request
 	const request = new Request('http://thecatapi.com/api/images/get?format=src', {method: 'GET'});

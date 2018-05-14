@@ -1,6 +1,6 @@
 class Registrar {
   constructor() {
-    this.url = "ServiceWorker.js";
+	this.url = "ServiceWorker.js";
     this.register();
   }
 
@@ -53,6 +53,46 @@ class Registrar {
       }
     });
   }
+
+	async requestNotificationAccess() {
+    // Get the private vapid key
+		const vapidPublicKey = await this.getVapidPublicKey();
+		if (navigator.serviceWorker && vapidPublicKey) {
+			try {
+        const reg = await navigator.serviceWorker.ready;
+        // generate subscription config
+        const subscribeOptions = { userVisibleOnly: true, applicationServerKey: this._urlBase64ToUint8Array(vapidPublicKey) };
+        // Subscribe user to private key (which contains server details)
+				const subscription = await reg.pushManager.subscribe(subscribeOptions)
+				// Return subscription as JSON (for later consumption)
+				return JSON.stringify(subscription)
+			} catch (err) {
+				throw err;
+			}
+		}
+	}
+
+	async getVapidPublicKey() {
+		if (!this.VAPID_PUBLIC_KEY) {
+			const request = await fetch('http://localhost:8081/vapidPublicKey');
+			const key = await request.text();
+			this.VAPID_PUBLIC_KEY = key;
+			return key;
+		} else {
+			return this.VAPID_PUBLIC_KEY;
+		}
+	}
+
+	// https://gist.github.com/malko/ff77f0af005f684c44639e4061fa8019
+	_urlBase64ToUint8Array(base64String) {
+		const padding = '='.repeat((4 - base64String.length % 4) % 4);
+		const base64 = (base64String + padding)
+			.replace(/-/g, '+')
+			.replace(/_/g, '/')
+			;
+		const rawData = window.atob(base64);
+		return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+	}
 }
 
 export default new Registrar();
