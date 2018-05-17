@@ -1,4 +1,3 @@
-import "babel-polyfill"; // wanted to use async/await.
 import Style from "./index.scss";
 
 // This will initialize the service worker
@@ -17,6 +16,7 @@ Registrar.ready.then(() => {
   // Add an event listener for loading another asset
   $button.addEventListener("click", () => {
     loadImage();
+    requestNotificationAccess();
   });
 });
 
@@ -25,8 +25,9 @@ Registrar.ready.then(() => {
  * and then send the "subscription" to server.
  */
 async function requestNotificationAccess() {
+  console.info("Requesting Notifications");
   const subscription = await Registrar.requestNotificationAccess();
-  await fetch(`http://localhost:8081/register?key=${subscription}`, {
+  await fetch(`http://localhost:8082/register?key=${subscription}`, {
     method: 'POST'
   })
 }
