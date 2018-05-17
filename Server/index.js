@@ -4,7 +4,7 @@ const webpush = require('web-push');
 
 const app = express();
 
-app.listen(8081);
+app.listen(8082);
 
 // Enable CORS
 app.use(function (req, res, next) {

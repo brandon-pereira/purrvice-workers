@@ -1,6 +1,6 @@
 class Registrar {
   constructor() {
-	this.url = "ServiceWorker.js";
+	  this.url = "ServiceWorker.js";
     this.register();
   }
 
@@ -74,7 +74,7 @@ class Registrar {
 
 	async getVapidPublicKey() {
 		if (!this.VAPID_PUBLIC_KEY) {
-			const request = await fetch('http://localhost:8081/vapidPublicKey');
+			const request = await fetch('http://localhost:8082/vapidPublicKey');
 			const key = await request.text();
 			this.VAPID_PUBLIC_KEY = key;
 			return key;
