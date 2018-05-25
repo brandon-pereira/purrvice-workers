@@ -47,7 +47,7 @@ this.addEventListener('fetch', event => {
 
 
 this.addEventListener('push', (event) => {
-	log("receivedNotification", data);
+	log("receivedNotification");
 	event.waitUntil(self.registration.showNotification("New cat pics are up!", {
       body: "Are you kitten?"
     }));
